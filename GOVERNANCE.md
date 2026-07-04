@@ -1,6 +1,6 @@
 # Governance
 
-`cloud-itonami-9420` is an OSS open-business blueprint for activities of trade unions -- representing and advocating for worker members in employment matters.
+`cloud-itonami-isic-9420` is an OSS open-business blueprint for activities of trade unions -- representing and advocating for worker members in employment matters.
 Governance covers both the capability layer and the operator model.
 
 ## Maintainers

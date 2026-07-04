@@ -2,7 +2,7 @@
 
 ## Classification
 
-- Repository: `cloud-itonami-9420`
+- Repository: `cloud-itonami-isic-9420`
 - ISIC Rev.5: `9420`
 - Activity: activities of trade unions -- representing and advocating for worker members in employment matters
 - Social impact: community access, data sovereignty, transparent audit

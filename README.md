@@ -1,4 +1,4 @@
-# cloud-itonami-9420
+# cloud-itonami-isic-9420
 
 Open Business Blueprint for **ISIC Rev.5 9420**: Activities of trade unions.
 
