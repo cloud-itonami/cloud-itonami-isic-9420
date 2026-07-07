@@ -35,3 +35,10 @@
 - every action path is auditable
 - member data stays outside Git
 - emergency manual override paths remain outside LLM control
+- a fabricated labor-law citation, incomplete evidence, an
+  insufficient membership-vote share, or an unresolved compliance
+  flag -- each forces a hold, not an override
+- bargaining-position finalization is logged and escalated, and
+  cannot be finalized twice for the same dispute: a double-
+  finalization attempt is held off this actor's own dispute facts
+  alone, with no upstream comparison needed
