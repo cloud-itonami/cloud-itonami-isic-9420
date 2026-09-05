@@ -238,7 +238,15 @@
       (str/replace ">" "&gt;")
       (str/replace "\"" "&quot;")))
 
-(defn- kw-name [v] (if (keyword? v) (name v) (str v)))
+;; NOTE: there is deliberately no `name`-based helper here. `(name
+;; :actuation/authorize-strike)` yields "authorize-strike", silently
+;; dropping the `actuation` namespace -- which is precisely the part
+;; that marks a REAL-WORLD collective-action act rather than an
+;; ordinary write. `esc` calls `str`, so keywords render fully
+;; qualified and already carry their own leading colon; a `:basis`
+;; entry that is a plain String (a legal-basis citation or a
+;; provenance URL, which is what `:grievance/verify` commits cite)
+;; renders as itself and must NOT be given a fake `:` prefix.
 
 (defn- share-str
   "Vote share as a fixed 3-decimal string using INTEGER arithmetic only.
@@ -280,7 +288,6 @@
     "  --color-neutral-solid-gray-900:#1a1a1a;"
     "  --color-primitive-blue-50:#e8f1fe;"
     "  --color-primitive-blue-100:#d9e6ff;"
-    "  --color-primitive-blue-800:#0031d8;"
     "  --color-primitive-blue-900:#0017c1;"
     "  --color-primitive-green-50:#e6f5ec;"
     "  --color-primitive-green-100:#c2e5d1;"
@@ -365,11 +372,11 @@
     (cond
       (nil? f) "<span class=\"dim\">no activity</span>"
       (and (= :governor-hold (:t f)) (seq (:basis f)))
-      (str "<span class=\"critical\">HARD hold</span> <span class=\"rule\">:"
-           (esc (kw-name (first (:basis f)))) "</span>")
+      (str "<span class=\"critical\">HARD hold</span> <span class=\"rule\">"
+           (esc (first (:basis f))) "</span>")
       (= :governor-hold (:t f))
-      (str "<span class=\"warn\">phase hold</span> <span class=\"rule\">:"
-           (esc (kw-name (:phase-reason f))) "</span>")
+      (str "<span class=\"warn\">phase hold</span> <span class=\"rule\">"
+           (esc (:phase-reason f)) "</span>")
       (= :committed (:t f)) "<span class=\"ok\">committed</span>"
       :else "<span class=\"dim\">in progress</span>")))
 
@@ -399,11 +406,11 @@
 (defn- rule-row [ledger rule]
   (let [f (hold-for-rule ledger rule)
         v (first (filter #(= rule (:rule %)) (:violations f)))]
-    (str "        <tr><td><span class=\"rule\">:" (esc (kw-name rule)) "</span></td>"
+    (str "        <tr><td><span class=\"rule\">" (esc rule) "</span></td>"
          "<td>" (if f
                   "<span class=\"critical\">HARD hold raised</span>"
                   "<span class=\"dim\">not exercised</span>") "</td>"
-         "<td><code>" (esc (kw-name (:op f))) "</code></td>"
+         "<td><code>" (esc (:op f)) "</code></td>"
          "<td><code>" (esc (:subject f)) "</code></td>"
          "<td>" (esc (:detail v)) "</td>"
          "<td>" (esc (:confidence f)) "</td></tr>")))
@@ -413,20 +420,18 @@
     (str "        <tr><td><code>" ph "</code></td>"
          "<td>" (esc label) "</td>"
          "<td>" (if (seq writes)
-                  (str/join " " (map #(str "<code>" (esc (kw-name %)) "</code>")
-                                     (sort (map kw-name writes))))
+                  (str/join " " (map #(str "<code>" (esc %) "</code>") (sort writes)))
                   "<span class=\"dim\">none (read-only)</span>") "</td>"
          "<td>" (if (seq auto)
-                  (str/join " " (map #(str "<code>" (esc (kw-name %)) "</code>")
-                                     (sort (map kw-name auto))))
+                  (str/join " " (map #(str "<code>" (esc %) "</code>") (sort auto)))
                   "<span class=\"dim\">none</span>") "</td></tr>")))
 
 (defn- phase-hold-row [{:keys [op subject phase phase-reason]}]
   (str "        <tr><td><code>" (esc phase) "</code></td>"
-       "<td><code>" (esc (kw-name op)) "</code></td>"
+       "<td><code>" (esc op) "</code></td>"
        "<td><code>" (esc subject) "</code></td>"
-       "<td><span class=\"warn\">held</span> <span class=\"rule\">:"
-       (esc (kw-name phase-reason)) "</span></td></tr>"))
+       "<td><span class=\"warn\">held</span> <span class=\"rule\">"
+       (esc phase-reason) "</span></td></tr>"))
 
 (defn- register-row
   "One append-only register record, straight from the store. The
@@ -441,7 +446,7 @@
        "</td></tr>"))
 
 (defn- attribution-row [{:keys [op subject by kept?]}]
-  (str "        <tr><td><code>" (esc (kw-name op)) "</code></td>"
+  (str "        <tr><td><code>" (esc op) "</code></td>"
        "<td><code>" (esc subject) "</code></td>"
        "<td>" (esc by) "</td>"
        "<td>" (if kept?
@@ -455,14 +460,18 @@
                             :governor-hold (if (seq basis)
                                              "<span class=\"critical\">governor-hold</span>"
                                              "<span class=\"warn\">phase-hold</span>")
-                            (str "<span class=\"dim\">" (esc (kw-name t)) "</span>"))
+                            (str "<span class=\"dim\">" (esc t) "</span>"))
        "</td>"
-       "<td><code>" (esc (kw-name op)) "</code></td>"
+       "<td><code>" (esc op) "</code></td>"
        "<td><code>" (esc subject) "</code></td>"
-       "<td>" (esc (kw-name disposition)) "</td>"
+       "<td>" (esc disposition) "</td>"
+       ;; `:basis` is heterogeneous by design: hold facts carry rule
+       ;; KEYWORDS, commit facts carry the advisor's `:cites`, which for
+       ;; `:grievance/verify` are the jurisdiction's legal-basis and
+       ;; provenance STRINGS. Render each as itself.
        "<td>" (cond
-                (seq basis) (str/join ", " (map #(str ":" (esc (kw-name %))) basis))
-                phase-reason (str ":" (esc (kw-name phase-reason)))
+                (seq basis) (str/join ", " (map esc basis))
+                phase-reason (esc phase-reason)
                 :else "<span class=\"dim\">&mdash;</span>")
        "</td></tr>"))
 
@@ -621,6 +630,6 @@
       (println " " (count ledger) "ledger facts,"
                (count holds) "HARD governor holds,"
                (count (phase-holds ledger)) "phase-gate holds")
-      (println "  HARD rules exercised:" (str/join ", " (sort (map name observed))))
+      (println "  HARD rules exercised:" (str/join ", " (sort (map str observed))))
       (println "  registers:" (count (store/authorization-history db)) "strike-authorization,"
                (count (store/finalization-history db)) "bargaining-position-finalization"))))
