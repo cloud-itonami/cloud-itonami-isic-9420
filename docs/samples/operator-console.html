@@ -19,7 +19,6 @@
   --color-neutral-solid-gray-900:#1a1a1a;
   --color-primitive-blue-50:#e8f1fe;
   --color-primitive-blue-100:#d9e6ff;
-  --color-primitive-blue-800:#0031d8;
   --color-primitive-blue-900:#0017c1;
   --color-primitive-green-50:#e6f5ec;
   --color-primitive-green-100:#c2e5d1;
@@ -106,12 +105,12 @@ color:var(--color-neutral-solid-gray-600);font-size:.8125rem;}
     <table>
       <thead><tr><th>Rule</th><th>This run</th><th>Op</th><th>Dispute</th><th>Governor detail</th><th>Advisor confidence</th></tr></thead>
       <tbody>
-        <tr><td><span class="rule">:no-spec-basis</span></td><td><span class="critical">HARD hold raised</span></td><td><code>verify</code></td><td><code>dispute-2</code></td><td>公式spec-basisの引用が無い提案は労働法要件として扱えない</td><td>0.9</td></tr>
-        <tr><td><span class="rule">:evidence-incomplete</span></td><td><span class="critical">HARD hold raised</span></td><td><code>authorize-strike</code></td><td><code>dispute-2</code></td><td>法域の必要書類(組合員投票記録/苦情処理記録/使用者通知記録/法律顧問審査記録等)が充足していない状態での提案</td><td>0.9</td></tr>
-        <tr><td><span class="rule">:strike-vote-share-insufficient</span></td><td><span class="critical">HARD hold raised</span></td><td><code>authorize-strike</code></td><td><code>dispute-3</code></td><td>dispute-3 の賛成票比率(55/100)が必要多数決基準(0.667)を下回る</td><td>0.3</td></tr>
-        <tr><td><span class="rule">:compliance-flag-unresolved</span></td><td><span class="critical">HARD hold raised</span></td><td><code>screen</code></td><td><code>dispute-4</code></td><td>未解決のコンプライアンス懸念がある状態での団体交渉方針確定提案は進められない</td><td>0.95</td></tr>
-        <tr><td><span class="rule">:already-authorized</span></td><td><span class="critical">HARD hold raised</span></td><td><code>authorize-strike</code></td><td><code>dispute-1</code></td><td>dispute-1 は既にストライキ承認済み</td><td>0.9</td></tr>
-        <tr><td><span class="rule">:already-finalized</span></td><td><span class="critical">HARD hold raised</span></td><td><code>finalize-bargaining-position</code></td><td><code>dispute-1</code></td><td>dispute-1 は既に団体交渉方針確定済み</td><td>0.9</td></tr>
+        <tr><td><span class="rule">:no-spec-basis</span></td><td><span class="critical">HARD hold raised</span></td><td><code>:grievance/verify</code></td><td><code>dispute-2</code></td><td>公式spec-basisの引用が無い提案は労働法要件として扱えない</td><td>0.9</td></tr>
+        <tr><td><span class="rule">:evidence-incomplete</span></td><td><span class="critical">HARD hold raised</span></td><td><code>:actuation/authorize-strike</code></td><td><code>dispute-2</code></td><td>法域の必要書類(組合員投票記録/苦情処理記録/使用者通知記録/法律顧問審査記録等)が充足していない状態での提案</td><td>0.9</td></tr>
+        <tr><td><span class="rule">:strike-vote-share-insufficient</span></td><td><span class="critical">HARD hold raised</span></td><td><code>:actuation/authorize-strike</code></td><td><code>dispute-3</code></td><td>dispute-3 の賛成票比率(55/100)が必要多数決基準(0.667)を下回る</td><td>0.3</td></tr>
+        <tr><td><span class="rule">:compliance-flag-unresolved</span></td><td><span class="critical">HARD hold raised</span></td><td><code>:compliance/screen</code></td><td><code>dispute-4</code></td><td>未解決のコンプライアンス懸念がある状態での団体交渉方針確定提案は進められない</td><td>0.95</td></tr>
+        <tr><td><span class="rule">:already-authorized</span></td><td><span class="critical">HARD hold raised</span></td><td><code>:actuation/authorize-strike</code></td><td><code>dispute-1</code></td><td>dispute-1 は既にストライキ承認済み</td><td>0.9</td></tr>
+        <tr><td><span class="rule">:already-finalized</span></td><td><span class="critical">HARD hold raised</span></td><td><code>:actuation/finalize-bargaining-position</code></td><td><code>dispute-1</code></td><td>dispute-1 は既に団体交渉方針確定済み</td><td>0.9</td></tr>
       </tbody>
     </table>
   </section>
@@ -122,9 +121,9 @@ color:var(--color-neutral-solid-gray-600);font-size:.8125rem;}
       <thead><tr><th>Phase</th><th>Label</th><th>May write</th><th>May auto-commit when governor-clean</th></tr></thead>
       <tbody>
         <tr><td><code>0</code></td><td>read-only</td><td><span class="dim">none (read-only)</span></td><td><span class="dim">none</span></td></tr>
-        <tr><td><code>1</code></td><td>assisted-intake</td><td><code>intake</code></td><td><span class="dim">none</span></td></tr>
-        <tr><td><code>2</code></td><td>assisted-verify</td><td><code>intake</code> <code>screen</code> <code>verify</code></td><td><span class="dim">none</span></td></tr>
-        <tr><td><code>3</code></td><td>supervised-auto</td><td><code>authorize-strike</code> <code>finalize-bargaining-position</code> <code>intake</code> <code>screen</code> <code>verify</code></td><td><code>intake</code></td></tr>
+        <tr><td><code>1</code></td><td>assisted-intake</td><td><code>:dispute/intake</code></td><td><span class="dim">none</span></td></tr>
+        <tr><td><code>2</code></td><td>assisted-verify</td><td><code>:compliance/screen</code> <code>:dispute/intake</code> <code>:grievance/verify</code></td><td><span class="dim">none</span></td></tr>
+        <tr><td><code>3</code></td><td>supervised-auto</td><td><code>:actuation/authorize-strike</code> <code>:actuation/finalize-bargaining-position</code> <code>:compliance/screen</code> <code>:dispute/intake</code> <code>:grievance/verify</code></td><td><code>:dispute/intake</code></td></tr>
       </tbody>
     </table>
   </section>
@@ -134,8 +133,8 @@ color:var(--color-neutral-solid-gray-600);font-size:.8125rem;}
     <table>
       <thead><tr><th>Phase</th><th>Op</th><th>Dispute</th><th>Outcome</th></tr></thead>
       <tbody>
-        <tr><td><code>0</code></td><td><code>intake</code></td><td><code>dispute-2</code></td><td><span class="warn">held</span> <span class="rule">:phase-disabled</span></td></tr>
-        <tr><td><code>1</code></td><td><code>screen</code></td><td><code>dispute-2</code></td><td><span class="warn">held</span> <span class="rule">:phase-disabled</span></td></tr>
+        <tr><td><code>0</code></td><td><code>:dispute/intake</code></td><td><code>dispute-2</code></td><td><span class="warn">held</span> <span class="rule">:phase-disabled</span></td></tr>
+        <tr><td><code>1</code></td><td><code>:compliance/screen</code></td><td><code>dispute-2</code></td><td><span class="warn">held</span> <span class="rule">:phase-disabled</span></td></tr>
       </tbody>
     </table>
   </section>
@@ -156,11 +155,11 @@ color:var(--color-neutral-solid-gray-600);font-size:.8125rem;}
     <table>
       <thead><tr><th>Op</th><th>Dispute</th><th>Approved by</th><th>Attribution survived the commit?</th></tr></thead>
       <tbody>
-        <tr><td><code>verify</code></td><td><code>dispute-1</code></td><td>op-1</td><td><span class="ok">in commit record</span></td></tr>
-        <tr><td><code>screen</code></td><td><code>dispute-1</code></td><td>op-1</td><td><span class="ok">in commit record</span></td></tr>
-        <tr><td><code>authorize-strike</code></td><td><code>dispute-1</code></td><td>op-1</td><td><span class="warn">audit only &mdash; not in commit record</span></td></tr>
-        <tr><td><code>finalize-bargaining-position</code></td><td><code>dispute-1</code></td><td>op-1</td><td><span class="warn">audit only &mdash; not in commit record</span></td></tr>
-        <tr><td><code>verify</code></td><td><code>dispute-3</code></td><td>op-1</td><td><span class="ok">in commit record</span></td></tr>
+        <tr><td><code>:grievance/verify</code></td><td><code>dispute-1</code></td><td>op-1</td><td><span class="ok">in commit record</span></td></tr>
+        <tr><td><code>:compliance/screen</code></td><td><code>dispute-1</code></td><td>op-1</td><td><span class="ok">in commit record</span></td></tr>
+        <tr><td><code>:actuation/authorize-strike</code></td><td><code>dispute-1</code></td><td>op-1</td><td><span class="warn">audit only &mdash; not in commit record</span></td></tr>
+        <tr><td><code>:actuation/finalize-bargaining-position</code></td><td><code>dispute-1</code></td><td>op-1</td><td><span class="warn">audit only &mdash; not in commit record</span></td></tr>
+        <tr><td><code>:grievance/verify</code></td><td><code>dispute-3</code></td><td>op-1</td><td><span class="ok">in commit record</span></td></tr>
       </tbody>
     </table>
   </section>
@@ -170,20 +169,20 @@ color:var(--color-neutral-solid-gray-600);font-size:.8125rem;}
     <table>
       <thead><tr><th>Fact</th><th>Op</th><th>Dispute</th><th>Disposition</th><th>Basis</th></tr></thead>
       <tbody>
-        <tr><td><span class="ok">committed</span></td><td><code>intake</code></td><td><code>dispute-1</code></td><td>commit</td><td>:id, :unit-name</td></tr>
-        <tr><td><span class="ok">committed</span></td><td><code>verify</code></td><td><code>dispute-1</code></td><td>commit</td><td>:労働組合法 (Trade Union Act) / 労働関係調整法 (Labor Relations Adjustment Act), :https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roushi/kumiai/index.html</td></tr>
-        <tr><td><span class="ok">committed</span></td><td><code>screen</code></td><td><code>dispute-1</code></td><td>commit</td><td>:compliance-check</td></tr>
-        <tr><td><span class="ok">committed</span></td><td><code>authorize-strike</code></td><td><code>dispute-1</code></td><td>commit</td><td>:dispute-1</td></tr>
-        <tr><td><span class="ok">committed</span></td><td><code>finalize-bargaining-position</code></td><td><code>dispute-1</code></td><td>commit</td><td>:dispute-1</td></tr>
-        <tr><td><span class="critical">governor-hold</span></td><td><code>verify</code></td><td><code>dispute-2</code></td><td>hold</td><td>:no-spec-basis</td></tr>
-        <tr><td><span class="critical">governor-hold</span></td><td><code>authorize-strike</code></td><td><code>dispute-2</code></td><td>hold</td><td>:evidence-incomplete</td></tr>
-        <tr><td><span class="ok">committed</span></td><td><code>verify</code></td><td><code>dispute-3</code></td><td>commit</td><td>:労働組合法 (Trade Union Act) / 労働関係調整法 (Labor Relations Adjustment Act), :https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roushi/kumiai/index.html</td></tr>
-        <tr><td><span class="critical">governor-hold</span></td><td><code>authorize-strike</code></td><td><code>dispute-3</code></td><td>hold</td><td>:strike-vote-share-insufficient</td></tr>
-        <tr><td><span class="critical">governor-hold</span></td><td><code>screen</code></td><td><code>dispute-4</code></td><td>hold</td><td>:compliance-flag-unresolved</td></tr>
-        <tr><td><span class="critical">governor-hold</span></td><td><code>authorize-strike</code></td><td><code>dispute-1</code></td><td>hold</td><td>:already-authorized</td></tr>
-        <tr><td><span class="critical">governor-hold</span></td><td><code>finalize-bargaining-position</code></td><td><code>dispute-1</code></td><td>hold</td><td>:already-finalized</td></tr>
-        <tr><td><span class="warn">phase-hold</span></td><td><code>intake</code></td><td><code>dispute-2</code></td><td>hold</td><td>:phase-disabled</td></tr>
-        <tr><td><span class="warn">phase-hold</span></td><td><code>screen</code></td><td><code>dispute-2</code></td><td>hold</td><td>:phase-disabled</td></tr>
+        <tr><td><span class="ok">committed</span></td><td><code>:dispute/intake</code></td><td><code>dispute-1</code></td><td>:commit</td><td>:id, :unit-name</td></tr>
+        <tr><td><span class="ok">committed</span></td><td><code>:grievance/verify</code></td><td><code>dispute-1</code></td><td>:commit</td><td>労働組合法 (Trade Union Act) / 労働関係調整法 (Labor Relations Adjustment Act), https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roushi/kumiai/index.html</td></tr>
+        <tr><td><span class="ok">committed</span></td><td><code>:compliance/screen</code></td><td><code>dispute-1</code></td><td>:commit</td><td>:compliance-check</td></tr>
+        <tr><td><span class="ok">committed</span></td><td><code>:actuation/authorize-strike</code></td><td><code>dispute-1</code></td><td>:commit</td><td>dispute-1</td></tr>
+        <tr><td><span class="ok">committed</span></td><td><code>:actuation/finalize-bargaining-position</code></td><td><code>dispute-1</code></td><td>:commit</td><td>dispute-1</td></tr>
+        <tr><td><span class="critical">governor-hold</span></td><td><code>:grievance/verify</code></td><td><code>dispute-2</code></td><td>:hold</td><td>:no-spec-basis</td></tr>
+        <tr><td><span class="critical">governor-hold</span></td><td><code>:actuation/authorize-strike</code></td><td><code>dispute-2</code></td><td>:hold</td><td>:evidence-incomplete</td></tr>
+        <tr><td><span class="ok">committed</span></td><td><code>:grievance/verify</code></td><td><code>dispute-3</code></td><td>:commit</td><td>労働組合法 (Trade Union Act) / 労働関係調整法 (Labor Relations Adjustment Act), https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roushi/kumiai/index.html</td></tr>
+        <tr><td><span class="critical">governor-hold</span></td><td><code>:actuation/authorize-strike</code></td><td><code>dispute-3</code></td><td>:hold</td><td>:strike-vote-share-insufficient</td></tr>
+        <tr><td><span class="critical">governor-hold</span></td><td><code>:compliance/screen</code></td><td><code>dispute-4</code></td><td>:hold</td><td>:compliance-flag-unresolved</td></tr>
+        <tr><td><span class="critical">governor-hold</span></td><td><code>:actuation/authorize-strike</code></td><td><code>dispute-1</code></td><td>:hold</td><td>:already-authorized</td></tr>
+        <tr><td><span class="critical">governor-hold</span></td><td><code>:actuation/finalize-bargaining-position</code></td><td><code>dispute-1</code></td><td>:hold</td><td>:already-finalized</td></tr>
+        <tr><td><span class="warn">phase-hold</span></td><td><code>:dispute/intake</code></td><td><code>dispute-2</code></td><td>:hold</td><td>:phase-disabled</td></tr>
+        <tr><td><span class="warn">phase-hold</span></td><td><code>:compliance/screen</code></td><td><code>dispute-2</code></td><td>:hold</td><td>:phase-disabled</td></tr>
       </tbody>
     </table>
   </section>
