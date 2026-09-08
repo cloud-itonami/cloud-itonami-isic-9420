@@ -28,7 +28,7 @@
   operation`'s `:actuation/authorize-strike`/`:actuation/finalize-
   bargaining-position`, always human-gated -- see README
   `Actuation`)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (defn- unsigned-certificate
   "Every certificate this actor produces is UNSIGNED -- signature is the
@@ -73,7 +73,7 @@
     (throw (ex-info "strike-authorization: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "strike-authorization: sequence must be >= 0" {})))
-  (let [auth-number (str (str/upper-case jurisdiction) "-STK-" (zero-pad sequence 6))
+  (let [auth-number (str (str/upper jurisdiction) "-STK-" (zero-pad sequence 6))
         record {"record_id" auth-number
                 "kind" "strike-authorization-draft"
                 "dispute_id" dispute-id
@@ -98,7 +98,7 @@
     (throw (ex-info "bargaining-position-finalization: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "bargaining-position-finalization: sequence must be >= 0" {})))
-  (let [finalization-number (str (str/upper-case jurisdiction) "-BRG-" (zero-pad sequence 6))
+  (let [finalization-number (str (str/upper jurisdiction) "-BRG-" (zero-pad sequence 6))
         record {"record_id" finalization-number
                 "kind" "bargaining-position-finalization-draft"
                 "dispute_id" dispute-id
