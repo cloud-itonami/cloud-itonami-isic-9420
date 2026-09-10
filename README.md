@@ -104,7 +104,7 @@ governor`'s `:actuation/authorize-strike`/`:actuation/finalize-
 bargaining-position` high-stakes gate and `union.phase`'s phase table,
 which never puts `:actuation/authorize-strike`/`:actuation/finalize-
 bargaining-position` in any phase's `:auto` set) -- see `union.
-phase`'s docstring and `test/union/phase_test.clj`'s `authorize-
+phase`'s docstring and `test/union/phase_test.kotoba`'s `authorize-
 strike-never-auto-at-any-phase`/`finalize-bargaining-position-never-
 auto-at-any-phase`. The actor may draft, check and recommend; a human
 elected union officer is always the one who actually authorizes a
@@ -193,14 +193,14 @@ only -- no bespoke domain capability lib to reference at all.
 
 | File | Role |
 |---|---|
-| `src/union/store.cljc` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + separate strike-authorization/bargaining-position-finalization history. No dynamically-filed sub-record -- both actuation ops act directly on a pre-seeded dispute, and the double-actuation guards check dedicated `:strike-authorized?`/`:bargaining-position-finalized?` booleans rather than a `:status` value |
-| `src/union/registry.cljc` | Strike-authorization + bargaining-position-finalization draft records, plus `strike-vote-share-insufficient?` -- the THIRD instance of this fleet's ratio-based check family (`leasing`/`behavioral` established the first two), MINIMUM-floor direction |
-| `src/union/facts.cljc` | Per-jurisdiction labor-relations regulatory catalog with an official spec-basis citation per entry, honest coverage reporting |
-| `src/union/unionadvisor.cljc` | **UnionOps-LLM** -- `mock-advisor` ‖ `llm-advisor`; intake/grievance-verification/compliance-screening/strike-authorization/bargaining-position-finalization proposals |
-| `src/union/governor.cljc` | **Union Governance Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · strike-vote-share-insufficient, pure ground-truth ratio recompute · compliance-flag-unresolved, unconditional evaluation, the THIRTIETH grounding of this discipline and FIRST specifically for a labor-compliance-flag concept) + already-authorized/already-finalized guards + 1 soft (confidence/actuation gate) |
-| `src/union/phase.cljc` | **Phase 0→3** -- read-only → assisted intake → assisted verify → supervised (both strike authorization and bargaining-position finalization always human; dispute intake is the ONLY auto-eligible op, no direct capital risk) |
-| `src/union/operation.cljc` | **OperationActor** -- langgraph-clj StateGraph |
-| `src/union/sim.cljc` | demo driver |
+| `src/union/store.kotoba` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + separate strike-authorization/bargaining-position-finalization history. No dynamically-filed sub-record -- both actuation ops act directly on a pre-seeded dispute, and the double-actuation guards check dedicated `:strike-authorized?`/`:bargaining-position-finalized?` booleans rather than a `:status` value |
+| `src/union/registry.kotoba` | Strike-authorization + bargaining-position-finalization draft records, plus `strike-vote-share-insufficient?` -- the THIRD instance of this fleet's ratio-based check family (`leasing`/`behavioral` established the first two), MINIMUM-floor direction |
+| `src/union/facts.kotoba` | Per-jurisdiction labor-relations regulatory catalog with an official spec-basis citation per entry, honest coverage reporting |
+| `src/union/unionadvisor.kotoba` | **UnionOps-LLM** -- `mock-advisor` ‖ `llm-advisor`; intake/grievance-verification/compliance-screening/strike-authorization/bargaining-position-finalization proposals |
+| `src/union/governor.kotoba` | **Union Governance Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · strike-vote-share-insufficient, pure ground-truth ratio recompute · compliance-flag-unresolved, unconditional evaluation, the THIRTIETH grounding of this discipline and FIRST specifically for a labor-compliance-flag concept) + already-authorized/already-finalized guards + 1 soft (confidence/actuation gate) |
+| `src/union/phase.kotoba` | **Phase 0→3** -- read-only → assisted intake → assisted verify → supervised (both strike authorization and bargaining-position finalization always human; dispute intake is the ONLY auto-eligible op, no direct capital risk) |
+| `src/union/operation.kotoba` | **OperationActor** -- langgraph-clj StateGraph |
+| `src/union/sim.kotoba` | demo driver |
 | `test/union/*_test.clj` | governor contract · phase invariants · store parity · registry conformance · facts coverage |
 
 ## Business-process coverage (honest)
