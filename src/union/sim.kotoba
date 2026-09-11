@@ -1,5 +1,5 @@
 (ns union.sim
-  "Demo driver -- `clojure -M:dev:run`. Walks a clean dispute through
+  "Demo driver -- `kbb -M:dev:run`. Walks a clean dispute through
   intake -> grievance verification -> compliance-flag screening ->
   strike-authorization proposal (always escalates) -> human approval
   -> commit, then through bargaining-position-finalization proposal
